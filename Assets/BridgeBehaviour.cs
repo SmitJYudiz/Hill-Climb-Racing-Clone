@@ -16,14 +16,18 @@ public class BridgeBehaviour : MonoBehaviour
     int numberOfLoopsStepsToGenerate;
 
 
-    //it should be same as width in pixels of the image used for bridge step: as currently it is 64px: then gap is 0.64
-    float gapBetweenEachLoopStep = 0.64f;
+    //it should be same as width in pixels of the image used for bridge step divided by 100: as currently it is 64px: then gap is 0.64
+    float stepWidth = 0.64f;
+
+
+    [SerializeField] GameObject startObjectPrefab;
+    [SerializeField] GameObject endObjectPrefab;
 
     private void Start()
     {
         allRBOfBridge = new List<Rigidbody2D>();
-        
-        //CreateBridge(startObject.transform.position, endObject.transform.position);
+
+        //CreateBridge(startObject.transform.position, endObject.transform.position);        
     }
 
 
@@ -76,7 +80,7 @@ public class BridgeBehaviour : MonoBehaviour
 
             loopStep.MyRB.bodyType = RigidbodyType2D.Static;
 
-            loopStep.gameObject.transform.position = positionCounter + new Vector3(gapBetweenEachLoopStep, 0, 0);
+            loopStep.gameObject.transform.position = positionCounter + new Vector3(stepWidth, 0, 0);
 
             positionCounter = loopStep.gameObject.transform.position;
 
@@ -96,27 +100,40 @@ public class BridgeBehaviour : MonoBehaviour
     }
 
     [EasyButtons.Button]
-    public void CreateDynamicBridge()
+    public void CreateDynamicBridge(Vector3 startPos, Vector3 endPos)
     {
 
         allRBOfBridge.Clear();
 
 
-        startObject.transform.position = bridgeStartPosition;
-        endObject.transform.position = bridgeEndPosition;
+        //startObject.transform.position = bridgeStartPosition;
+        //endObject.transform.position = bridgeEndPosition;
+        //startObject.transform.position = new Vector3(startPos.x + 0.5f, startPos.y - 0.5f, 0);
+        //endObject.transform.position = new Vector3(endPos.x - 0.5f, endPos.y - 0.5f, 0);
+
+        startObject = Instantiate(startObjectPrefab, transform);
+        endObject = Instantiate(endObjectPrefab, transform);
+
+
+        startObject.transform.position = new Vector3(startPos.x, startPos.y - 0.2f , 0);
+        endObject.transform.position = new Vector3(endPos.x, endPos.y-0.2f, 0);
 
         StepBehaviour initialStep = Instantiate(Step, transform);
 
         initialStep.SetConnectedRB(startObject.GetComponent<Rigidbody2D>());
 
-        initialStep.transform.position = startObject.transform.position + new Vector3(0.66f, 0, 0);
+        initialStep.transform.position = startObject.transform.position + new Vector3(stepWidth, 0, 0);
 
         positionCounter = initialStep.transform.position;
 
         allRBOfBridge.Add(initialStep.gameObject.GetComponent<Rigidbody2D>());
 
-        numberOfLoopsStepsToGenerate = Mathf.FloorToInt( ((bridgeEndPosition.x - bridgeStartPosition.x)/gapBetweenEachLoopStep) -1);
 
+        Debug.Log("startPos: " + startObject.transform.position.x);
+        Debug.Log("endPosX: "+endObject.transform.position.x);
+
+        //numberOfLoopsStepsToGenerate = Mathf.FloorToInt( ((endObject.transform.position.x - startObject.transform.position.x)/stepWidth) -1);
+        numberOfLoopsStepsToGenerate = Mathf.FloorToInt(( Vector3.Distance(startObject.transform.position,endObject.transform.position) / stepWidth)-1);
 
         for (int i = 1; i <= numberOfLoopsStepsToGenerate; i++)
         {
@@ -124,7 +141,7 @@ public class BridgeBehaviour : MonoBehaviour
 
             loopStep.MyRB.bodyType = RigidbodyType2D.Static;
 
-            loopStep.gameObject.transform.position = positionCounter + new Vector3(gapBetweenEachLoopStep, 0, 0);
+            loopStep.gameObject.transform.position = positionCounter + new Vector3(stepWidth, 0, 0);
 
             positionCounter = loopStep.gameObject.transform.position;
 

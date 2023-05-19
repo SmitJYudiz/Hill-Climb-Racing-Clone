@@ -16,8 +16,5 @@ public class StepBehaviour : MonoBehaviour
     public void SetConnectedRB(Rigidbody2D incomingRB)
     {
         myHingeJoint.connectedBody = incomingRB;
-
-
-        
     }   
 }
