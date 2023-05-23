@@ -129,8 +129,8 @@ public class BridgeBehaviour : MonoBehaviour
         allRBOfBridge.Add(initialStep.gameObject.GetComponent<Rigidbody2D>());
 
 
-        Debug.Log("startPos: " + startObject.transform.position.x);
-        Debug.Log("endPosX: "+endObject.transform.position.x);
+        //Debug.Log("startPos: " + startObject.transform.position.x);
+        //Debug.Log("endPosX: "+endObject.transform.position.x);
 
         //numberOfLoopsStepsToGenerate = Mathf.FloorToInt( ((endObject.transform.position.x - startObject.transform.position.x)/stepWidth) -1);
         numberOfLoopsStepsToGenerate = Mathf.FloorToInt(( Vector3.Distance(startObject.transform.position,endObject.transform.position) / stepWidth)-1);

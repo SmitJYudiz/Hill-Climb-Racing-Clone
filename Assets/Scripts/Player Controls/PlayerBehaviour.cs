@@ -14,6 +14,7 @@ public class PlayerBehaviour : MonoBehaviour
    
     public Vector2 inputVector;
 
+    
 
     void OnMovement(InputValue inputValue)
     {
