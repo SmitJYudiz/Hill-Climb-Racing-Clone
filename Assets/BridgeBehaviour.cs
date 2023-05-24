@@ -23,6 +23,8 @@ public class BridgeBehaviour : MonoBehaviour
     [SerializeField] GameObject startObjectPrefab;
     [SerializeField] GameObject endObjectPrefab;
 
+    [SerializeField] Vector3 endOffset;
+
     private void Start()
     {
         allRBOfBridge = new List<Rigidbody2D>();
@@ -116,7 +118,7 @@ public class BridgeBehaviour : MonoBehaviour
 
 
         startObject.transform.position = new Vector3(startPos.x, startPos.y - 0.2f , 0);
-        endObject.transform.position = new Vector3(endPos.x, endPos.y-0.2f, 0);
+        endObject.transform.position = new Vector3(endPos.x, endPos.y-0.2f, 0)+endOffset;
 
         StepBehaviour initialStep = Instantiate(Step, transform);
 

@@ -14,14 +14,36 @@ public class PlayerBehaviour : MonoBehaviour
    
     public Vector2 inputVector;
 
-    
+    Vector3 playerStartTransform;
+    Quaternion playerStartRotation;
+
+    private void Awake()
+    {
+        playerStartTransform = transform.position;
+        playerStartRotation = transform.rotation;
+    }
+
+    private void Start()
+    {
+        Debug.Log("start pos 1: "+playerStartTransform);
+        Events.OnGameRestart += ResetPlayerPosition;       
+    }
+
+    void ResetPlayerPosition()
+    {
+        Debug.Log("end pos 1: " + transform.position);
+        transform.position = playerStartTransform;
+        transform.rotation = playerStartRotation;
+        //transform.rotation = playerStartTransform.rotation;
+        //Debug.Log("end pos 2: " + playerStartTransform.position);
+    }
 
     void OnMovement(InputValue inputValue)
     {
         inputVector = inputValue.Get<Vector2>();
         MoveCar();
 
-        IsCarFlipped();
+       // IsCarFlipped();
     }
      void MoveCar()
     {
@@ -40,12 +62,12 @@ public class PlayerBehaviour : MonoBehaviour
         }
     }
 
-    //if car is flipped upside down, then gameover.
-    void IsCarFlipped()
-    {
-        if(transform.rotation.z>160 && playerRB.velocity.magnitude <= 1)
-        {
-            UIController.instance.ShowNextScreen(ScreenType.Gameover);
-        }
-    }
+    ////if car is flipped upside down, then gameover.
+    //void IsCarFlipped()
+    //{
+    //    if(transform.rotation.z>160 && playerRB.velocity.magnitude <= 1)
+    //    {
+    //        UIController.instance.ShowNextScreen(ScreenType.Gameover);
+    //    }
+    //}
 }

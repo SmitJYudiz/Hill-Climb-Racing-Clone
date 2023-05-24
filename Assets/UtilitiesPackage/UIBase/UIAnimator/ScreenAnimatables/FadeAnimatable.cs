@@ -1,19 +1,20 @@
 using System.Collections;
 using System.Collections.Generic;
 using DG.Tweening;
+using Portadown.UIKit;
 using UnityEngine;
 
 
-namespace Portadown.UIKit
+namespace Master.UIKit
 {
 
     public class FadeAnimatable : ScreenAnimatable
     {
         CanvasGroup _canvasGroup;
-        public override void Initialize(UIView screenView)
+        public override void Initialize(UIScreenView screenView)
         {
             _canvasGroup = screenView.Parent.GetComponent<CanvasGroup>();
-            if(_canvasGroup == null)
+            if (_canvasGroup == null)
             {
                 _canvasGroup = screenView.Parent.gameObject.AddComponent<CanvasGroup>();
             }

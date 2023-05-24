@@ -2,8 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
+using Master.UIKit;
 
-namespace Portadown.UIKit
+namespace Master.UIKit
 {
 
     public class ScaleAnimatable : ScreenAnimatable
@@ -14,7 +15,7 @@ namespace Portadown.UIKit
         Vector3 _initialScale;
 
 
-        public override void Initialize(UIView screenView)
+        public override void Initialize(UIScreenView screenView)
         {
 
             _TargetRectTransform = screenView.Parent.GetComponent<RectTransform>();

@@ -4,7 +4,7 @@ using UnityEngine;
 using DG.Tweening;
 using System.Linq;
 
-namespace Portadown.UIKit
+namespace Master.UIKit
 {
 
     [RequireComponent(typeof(ScreenAnimatable))]
@@ -20,7 +20,7 @@ namespace Portadown.UIKit
 
 
         public List<Animatable> animatables;
-        UIView _UIScreenView;
+        UIScreenView _UIScreenView;
 
 
 
@@ -39,7 +39,7 @@ namespace Portadown.UIKit
 
         private void Initialize()
         {
-            _UIScreenView = GetComponentInParent<UIView>();
+            _UIScreenView = GetComponentInParent<UIScreenView>();
             _UIScreenView.OnScreenStateChanged += OnScreenStateChanged;
 
             if (animatables != null)

@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using DG.Tweening;
 using UnityEngine;
 
-namespace Portadown.UIKit
+namespace Master.UIKit
 {
-    public class FadeElementAnimatable : ElementAnimatable
+    public class sFadeElementAnimatable : ElementAnimatable
     {
         CanvasGroup _canvasGroup;
 
@@ -14,7 +14,7 @@ namespace Portadown.UIKit
         {
         }
 
-        public override void Initialize(UIView screenView)
+        public override void Initialize(UIScreenView screenView)
         {
             _canvasGroup = GetComponent<CanvasGroup>();
             if (_canvasGroup == null)

@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
 
-namespace Portadown.UIKit
+namespace Master.UIKit
 {
     public enum CanvasState
     {
@@ -22,31 +22,27 @@ namespace Portadown.UIKit
     {
         public static string BACKGROUND = "Background";
         public static string PARENT = "Parent";
-        public bool BackKeyActive = false;
+
         public delegate void ScreenStateChanged(CanvasState _state);
         public event ScreenStateChanged OnScreenStateChanged;
 
-        public Canvas BaseCanvas { get; }
-        public GraphicRaycaster BaseRaycaster { get; }
-        [HideInInspector]public bool isLoading = false;
+        public Canvas BaseCanvas { get; private set; }
+        public GraphicRaycaster BaseRaycaster { get; private set; }
+
         public CanvasState State
         {
-            get
-            {
-                return _state;
-            }
+            get => _state;
             set
             {
                 _state = value;
-
                 NotifyStateChanged(_state);
             }
         }
+
         CanvasState _state;
         Canvas _canvas;
         GraphicRaycaster _raycaster;
-        private void OnEnable() { Enable(); }
-        private void OnDisable() { Disable(); }
+
         private void Awake()
         {
             _canvas = GetComponent<Canvas>();
@@ -56,30 +52,22 @@ namespace Portadown.UIKit
             OnAwake();
         }
 
-        public virtual void OnAwake() { }
-        public virtual void Enable() { }
-        public virtual void Disable() { }
+        public virtual void OnAwake()
+        {
+            Events.RaycasterOnOff += ToggleRaycaster;
+        }
 
+        public void OnDestroy()
+        {
+            Events.RaycasterOnOff -= ToggleRaycaster;
+        }
         void ToggleCanvasState(bool hasToEnable)
         {
 
-            if (hasToEnable)
-            {
-                State = CanvasState.Active;
-            }
-            else
-            {
-                State = CanvasState.Inactive;
-            }
+            State = hasToEnable ? CanvasState.Active : CanvasState.Inactive;
+            //NotifyStateChanged(State);
         }
-        public void ToggleCanvas(bool value)
-        {
-            _canvas.enabled = value;
-        }
-        public void ToggleRaycast(bool value)
-        {
-            _raycaster.enabled = value;
-        }
+
         void ResetCanvas()
         {
             _raycaster.enabled = false;
@@ -92,24 +80,44 @@ namespace Portadown.UIKit
             OnScreenStateChanged?.Invoke(state);
         }
 
-        public virtual void OnBack() { }
-        
+        //public void OnEnable()
+        //{
+        //    
+        //}
+        //public void OnDisable()
+        //{
+        //    Events.RaycasterOnOff -= ToggleRaycaster;
+        //}
+
+        public virtual void OnBackKey() { }
+
+
         public virtual void Show()
         {
-            if (isLoading) return;
-            isLoading = true;
             OnScreenShowCalled();
             ToggleCanvasState(true);
-            ToggleRaycast(true);
         }
         public virtual void Hide()
         {
-            if (isLoading) return;
-            isLoading = true;
             OnScreenHideCalled();
             ToggleCanvasState(false);
         }
 
+
+        public void ToggleCanvasElements(bool value)
+        {
+            _raycaster.enabled = value;
+            _canvas.enabled = value;
+        }
+        public void ToggleCanvas(bool value)
+        {
+            _canvas.enabled = value;
+        }
+
+        public void ToggleRaycaster(bool value)
+        {
+            _raycaster.enabled = value;
+        }
         public virtual void OnScreenShowCalled() { }
 
         public virtual void OnScreenHideCalled() { }
@@ -118,87 +126,6 @@ namespace Portadown.UIKit
 
         public virtual void OnScreenHideAnimationCompleted() { }
 
-    }
 
-    public class UIView : UIBase
-    {
-        [HideInInspector]
-        public Image Background;
-        [HideInInspector]
-        public RectTransform Parent;
-
-        UIAnimator _uiAnimator;
-        public override void Enable()
-        {
-            base.Enable();
-            Events.OnScreenChanged += ToggleRaycaster;
-        }
-        public override void Disable()
-        {
-            base.Disable();
-            Events.OnScreenChanged -= ToggleRaycaster;
-        }
-        public override void OnAwake()
-        {
-            base.OnAwake();
-            Background = transform.Find(BACKGROUND).GetComponent<Image>();
-            Parent = transform.Find(PARENT).GetComponent<RectTransform>();
-            _uiAnimator = GetComponent<UIAnimator>();
-        }
-        
-        public override void OnScreenShowCalled()
-        {
-            base.OnScreenShowCalled();
-            ToggleCanvas(true);
-        }
-
-        public override void OnScreenShowAnimationCompleted()
-        {
-            base.OnScreenShowAnimationCompleted();
-            isLoading = false;
-            ToggleRaycaster(true);
-        }
-        
-        public override void OnScreenHideCalled()
-        {
-            base.OnScreenHideCalled();
-            ToggleRaycaster(false);
-
-            if (_uiAnimator == null)
-            {
-                OnScreenHideAnimationCompleted();
-            }
-        }
-
-        public override void OnScreenHideAnimationCompleted()
-        {
-            base.OnScreenHideAnimationCompleted();
-            isLoading = false;
-            ToggleCanvas(false);
-        }
-
-        IEnumerator BackKeyUpdateRoutine()
-        {
-            //yield return new WaitForSeconds(.5f);
-            Debug.Log("==>> Back active : " + transform.name);
-            while (BackKeyActive)
-            {
-                if (Input.GetKeyDown(KeyCode.Escape))// if (Keyboard.current.escapeKey.wasPressedThisFrame)
-                {
-                    BackKeyActive = false;
-                    OnBack();
-                    yield return new WaitForSeconds(1f);
-                }
-                yield return null;
-            }
-            Debug.Log("==>> Back Deactive : " + transform.name);
-        }
-
-        public void ToggleRaycaster(bool isActive)
-        {
-            ToggleRaycast(isActive);
-            BackKeyActive = isActive;
-            if (isActive) StartCoroutine("BackKeyUpdateRoutine");
-        }
     }
 }

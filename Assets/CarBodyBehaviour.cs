@@ -8,20 +8,29 @@ public class CarBodyBehaviour : MonoBehaviour
 
     [SerializeField] Transform parentTransform;
 
-    [SerializeField] float ultaOffset;
-    private void OnCollisionEnter2D(Collision2D collision)
+    float ultaOffset;
+    bool canCallGameOver;
+    private void Start()
     {
-        Debug.Log("opponent's layer "+collision.collider.gameObject.layer);
-        if (collision.collider.gameObject.layer == LayerMask.NameToLayer (LayerMask.LayerToName(8)))
-        {
+        ultaOffset = 0f;
+        canCallGameOver = true;
+        Events.OnGameRestart += changeBooleanCanCallGameOver;
+    }
 
-            Debug.Log("GameOver");
-            Debug.Log("apna offset: "+ Vector3.Dot(parentTransform.up, Vector3.down));
-            UIController.instance.ShowNextScreen(ScreenType.Gameover);
-            if (Vector3.Dot(parentTransform.up, Vector3.down) > ultaOffset)
-            {
-                Debug.Log("GameOver");
-                UIController.instance.ShowNextScreen(ScreenType.Gameover);
+    public void changeBooleanCanCallGameOver()
+    {
+        canCallGameOver = true;
+    }
+
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {       
+        if (collision.collider.gameObject.layer == LayerMask.NameToLayer (LayerMask.LayerToName(8)))
+        {                      
+            if (Vector3.Dot(parentTransform.up, Vector3.down) > ultaOffset && canCallGameOver)
+            {                
+                Events.GameOver();
+                canCallGameOver = false;
             }
         }
     }

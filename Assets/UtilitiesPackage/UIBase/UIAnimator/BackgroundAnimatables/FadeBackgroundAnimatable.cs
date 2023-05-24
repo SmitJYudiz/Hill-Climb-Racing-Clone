@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
 using UnityEngine.UI;
+using Master.UIKit;
 
-namespace Portadown.UIKit {
+namespace Master.UIKit
+{
 
     public class FadeBackgroundAnimatable : BackgroundAnimatable {
 
@@ -12,7 +14,7 @@ namespace Portadown.UIKit {
         float _initialAlpha;
 
 
-        public override void Initialize(UIView screenView) {
+        public override void Initialize(UIScreenView screenView) {
 
             if(screenView.Background == null)
             {

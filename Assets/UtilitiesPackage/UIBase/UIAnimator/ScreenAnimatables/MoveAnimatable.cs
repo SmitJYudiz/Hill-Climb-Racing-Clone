@@ -2,8 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
+using Master.UIKit;
 
-namespace Portadown.UIKit
+namespace Master.UIKit
 {
 
     public class MoveAnimatable : ScreenAnimatable
@@ -17,7 +18,7 @@ namespace Portadown.UIKit
         float multiplier = 1f;
 
 
-        public override void Initialize(UIView screenView)
+        public override void Initialize(UIScreenView screenView)
         {
 
             _TargetRectTransform = screenView.Parent.GetComponent<RectTransform>();

@@ -1,3 +1,5 @@
+
+
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -5,49 +7,57 @@ using UnityEngine;
 
 public class Events : MonoBehaviour
 {
-    //public static event Action<API_TYPE, string> WebRequestCompleted = delegate { };
 
-    public static event Action<string, float> OnDownlodProgress;
+    public static event Action<float> OnDownlodProgress;
     public static event Action OnDownlodFailed;
 
     public static event Action<string, bool> OnNearestSculpture;
 
-    public static event Action OnLanguageChanged;
-    public static event Action<bool> OnScreenChanged;
+    //public static event Action OnLanguageChanged;
+    public static event Action<string> OnLanguageChanged;
 
-    //public static void OnWebRequestComplete(API_TYPE aPI_TYPE, string obj)
-    //{
-    //    if (WebRequestCompleted != null)
-    //        WebRequestCompleted(aPI_TYPE, obj);
-    //}
+    public static event Action<bool> RaycasterOnOff;
 
-    //public static void DownloadProgress(string name, float progress)
-    //{
-    //    if (OnDownlodProgress != null)
-    //        OnDownlodProgress(name, progress);
-    //    //OnDownlodProgress?.Invoke(name, progress);
-    //}
 
-    //public static void DownloadFailed()
-    //{
-    //    if (OnDownlodFailed != null)
-    //        OnDownlodFailed();
-    //}
+    public static event Action<bool> OnScreenChange;
+    public static event Action OnGameOver;
 
-    //public static void NearestSculpture(string sculpId, bool isNearest)
-    //{
-    //    if (OnNearestSculpture != null)
-    //        OnNearestSculpture(sculpId, isNearest);
-    //}
+    public static event Action OnGameRestart;
+
+
+    public static void GameOver()
+    {
+        Debug.Log("GameOver called");
+        OnGameOver?.Invoke();
+    }
+
+    public static void GameRestart()
+    {
+        OnGameRestart?.Invoke();
+    }
+    public static void ScreenChange(bool val)
+    {
+        OnScreenChange?.Invoke(val);
+    }
+
+    
+   
+
+    public static void EventRayCasterOnOff(bool rayCasterOff)
+    {
+        //Debug.Log("on or off "+rayCasterOff);
+        if (RaycasterOnOff != null)
+            RaycasterOnOff(rayCasterOff);
+    }
 
     //public static void LanguageChanged()
     //{
     //    if (OnLanguageChanged != null)
     //        OnLanguageChanged();
     //}
-
-    public static void ScreenChanged(bool val)
+    public static void LanguageChanged(string langId)
     {
-        OnScreenChanged?.Invoke(val);
+        if (OnLanguageChanged != null)
+            OnLanguageChanged(langId);
     }
 }

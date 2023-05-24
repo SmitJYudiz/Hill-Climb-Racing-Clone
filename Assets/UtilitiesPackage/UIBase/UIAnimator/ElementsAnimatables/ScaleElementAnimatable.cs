@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
 using UnityEngine.UI;
+using Master.UIKit;
 
-namespace Portadown.UIKit {
+namespace Master.UIKit
+{
 
     public class ScaleElementAnimatable : ElementAnimatable {
 
@@ -12,7 +14,7 @@ namespace Portadown.UIKit {
         Vector3 _initialScale;
 
 
-        public override void Initialize(UIView screenView) {
+        public override void Initialize(UIScreenView screenView) {
 
             _TargetTransform = transform;
             _initialScale = _TargetTransform.localScale;

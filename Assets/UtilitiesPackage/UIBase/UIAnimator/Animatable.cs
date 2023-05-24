@@ -4,9 +4,11 @@ using System.Collections.Generic;
 using DG.Tweening;
 using UnityEngine;
 
-namespace Portadown.UIKit {
+namespace Master.UIKit
+{
 
-    public enum AnimationDirection {
+    public enum AnimationDirection
+    {
         Top,
         Bottom,
         Left,
@@ -24,7 +26,8 @@ namespace Portadown.UIKit {
 
     [DisallowMultipleComponent]
     [System.Serializable]
-    public abstract class Animatable : MonoBehaviour, IComparer<Animatable>, IComparable<Animatable> {
+    public abstract class Animatable : MonoBehaviour, IComparer<Animatable>, IComparable<Animatable>
+    {
 
         [Header("Animation configration :")]
         public int AnimaionLayer;
@@ -36,7 +39,7 @@ namespace Portadown.UIKit {
         public delegate void HideAnimationCompleted();
         public HideAnimationCompleted OnHideAnimationCompleted;
 
-        public abstract void Initialize(UIView screenView);
+        public abstract void Initialize(UIScreenView screenView);
 
         public abstract void ResetAnimator();
 
@@ -45,40 +48,47 @@ namespace Portadown.UIKit {
         public abstract void HideAnimation(float time, Ease ease, float delay, AnimationTransition animationTransition = AnimationTransition.Reverse, HideAnimationCompleted callback = null);
 
 
-        public int Compare(Animatable x, Animatable y) {
+        public int Compare(Animatable x, Animatable y)
+        {
             return x.AnimaionLayer.CompareTo(y.AnimaionLayer);
         }
 
-        public int CompareTo(Animatable other) {
+        public int CompareTo(Animatable other)
+        {
             return AnimaionLayer.CompareTo(other.AnimaionLayer);
 
         }
     }
 
-    public abstract class ScreenAnimatable : Animatable {
+    public abstract class ScreenAnimatable : Animatable
+    {
 
-        public ScreenAnimatable() {
+        public ScreenAnimatable()
+        {
             AnimaionLayer = 0;
         }
 
     }
 
 
-    public abstract class BackgroundAnimatable : Animatable {
+    public abstract class BackgroundAnimatable : Animatable
+    {
 
-        public BackgroundAnimatable() {
+        public BackgroundAnimatable()
+        {
             AnimaionLayer = 0;
         }
 
     }
 
-    public abstract class ElementAnimatable : Animatable {
+    public abstract class ElementAnimatable : Animatable
+    {
 
-        public ElementAnimatable() {
+        public ElementAnimatable()
+        {
             AnimaionLayer = 1;
         }
 
         public abstract void IdleAnimation();
     }
 }
-

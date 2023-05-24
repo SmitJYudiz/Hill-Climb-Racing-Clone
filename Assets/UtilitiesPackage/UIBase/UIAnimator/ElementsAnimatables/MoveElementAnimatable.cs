@@ -1,10 +1,11 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
 using UnityEngine.UI;
+using Master.UIKit;
 
-namespace Portadown.UIKit
+namespace Master.UIKit
 {
 
     public class MoveElementAnimatable : ElementAnimatable
@@ -21,7 +22,7 @@ namespace Portadown.UIKit
         {
             _initialPosition = _TargetTransform.anchoredPosition3D;
         }
-        public override async void Initialize(UIView screenView)
+        public override async void Initialize(UIScreenView screenView)
         {
             _Parent = screenView.GetComponent<RectTransform>();
             _TargetTransform = GetComponent<RectTransform>();
